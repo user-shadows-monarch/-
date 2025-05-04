@@ -74,13 +74,24 @@
       padding: 20px;
       font-size: 18px;
       color: #333;
-      transition: all 0.5s ease;
+      transition: transform 0.5s ease, opacity 0.3s ease;
     }
 
     #playerTurn {
       font-size: 22px;
       color: #333;
       margin-bottom: 10px;
+    }
+
+    /* Animation for card swipe */
+    .swipe-out {
+      transform: translateX(100vw); /* swipe the card out */
+      opacity: 0;
+    }
+
+    .swipe-in {
+      transform: translateX(-100vw); /* swipe the card in */
+      opacity: 0;
     }
   </style>
 </head>
@@ -138,6 +149,7 @@
 
     let players = ["Player 1", "Player 2"];
     let turn = 0;
+    const swipeSound = new Audio('https://www.soundjay.com/button/beep-07.wav');  // Replace with any swipe sound URL
 
     window.onload = () => {
       const startBtn = document.getElementById("startBtn");
@@ -158,10 +170,33 @@
       });
 
       nextBtn.addEventListener("click", () => {
-        const randomQuestion = questions[Math.floor(Math.random() * questions.length)];
-        document.getElementById("questionText").textContent = randomQuestion;
-        turn = 1 - turn;
-        document.getElementById("playerTurn").textContent = `Turn: ${players[turn]}`;
+        const questionCard = document.getElementById("questionCard");
+        const questionText = document.getElementById("questionText");
+        
+        // Play swipe sound
+        swipeSound.play();
+
+        // Add swipe-out animation
+        questionCard.classList.add("swipe-out");
+
+        // Wait for animation to end, then reset and change question
+        setTimeout(() => {
+          const randomQuestion = questions[Math.floor(Math.random() * questions.length)];
+          questionText.textContent = randomQuestion;
+          
+          // Add swipe-in animation
+          questionCard.classList.remove("swipe-out");
+          questionCard.classList.add("swipe-in");
+
+          // Switch turns
+          turn = 1 - turn;
+          document.getElementById("playerTurn").textContent = `Turn: ${players[turn]}`;
+
+          // Reset swipe-in animation after it completes
+          setTimeout(() => {
+            questionCard.classList.remove("swipe-in");
+          }, 500);
+        }, 500);  // Timeout matches the swipe-out animation duration
       });
     };
   </script>

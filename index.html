@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Swap Card Game</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .game-container {
+      text-align: center;
+      max-width: 400px;
+      width: 90%;
+    }
+
+    .welcome-screen, .game-screen {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .active {
+      display: flex;
+    }
+
+    h1 {
+      color: #ff5e78;
+      font-size: 32px;
+      margin-bottom: 20px;
+    }
+
+    input {
+      padding: 10px;
+      margin: 10px;
+      border-radius: 8px;
+      border: 2px solid #ff5e78;
+      width: 80%;
+      font-size: 16px;
+    }
+
+    button {
+      padding: 10px 20px;
+      font-size: 18px;
+      border: none;
+      background-color: #ff5e78;
+      color: white;
+      border-radius: 8px;
+      cursor: pointer;
+      margin-top: 15px;
+    }
+
+    button:hover {
+      background-color: #e84c63;
+    }
+
+    .card {
+      width: 100%;
+      min-height: 180px;
+      margin: 20px auto;
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+      font-size: 18px;
+      color: #333;
+      transition: all 0.5s ease;
+    }
+
+    #playerTurn {
+      font-size: 22px;
+      color: #333;
+      margin-bottom: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="game-container">
+    <!-- Welcome Screen -->
+    <div class="welcome-screen active" id="welcomeScreen">
+      <h1>Card Swap Game</h1>
+      <input type="text" id="player1" placeholder="Enter Player 1 Name (e.g., Boy)" />
+      <input type="text" id="player2" placeholder="Enter Player 2 Name (e.g., Girl)" />
+      <button id="startBtn">Start Game</button>
+    </div>
+
+    <!-- Game Screen -->
+    <div class="game-screen" id="gameScreen">
+      <div id="playerTurn">Turn: Player</div>
+      <div class="card" id="questionCard">
+        <p id="questionText">Click "Swap Card" to Start</p>
+      </div>
+      <button id="nextBtn">Swap Card</button>
+    </div>
+  </div>
+
+  <script>
+    const questions = [
+      "What’s your biggest fear?",
+      "If you could be invisible for a day, what would you do?",
+      "What’s a secret you’ve never told anyone?",
+      "Have you ever had a crush on a friend?",
+      "What’s the most embarrassing thing you’ve done?",
+      "Would you kiss someone on the first date?",
+      "What’s your dream date?",
+      "Have you ever pretended to like something to impress someone?",
+      "Have you ever sent a message to the wrong person?",
+      "Who do you stalk the most on social media?",
+      "What’s the most awkward date you’ve ever been on?",
+      "Would you date someone just because they’re rich?",
+      "Do you still stalk an ex?",
+      "Have you ever had a crush on a teacher?",
+      "Do you sing in the shower?",
+      "Do you dance in front of the mirror?",
+      "Have you ever ghosted someone?",
+      "Have you ever been rejected?",
+      "What would you do if you woke up as the opposite gender?",
+      "Do you think you're a good kisser?",
+      "Have you ever tried spying on someone?",
+      "What's the craziest thing you've done for love?",
+      "Have you ever faked feelings?",
+      "Would you date your best friend?",
+      "What's the worst outfit you’ve ever worn?",
+      "Would you rather lose your phone or your dignity?",
+      "What’s your most recent lie?",
+      "If you had to choose, truth or dare for life?"
+    ];
+
+    let players = ["Player 1", "Player 2"];
+    let turn = 0;
+
+    window.onload = () => {
+      const startBtn = document.getElementById("startBtn");
+      const nextBtn = document.getElementById("nextBtn");
+
+      startBtn.addEventListener("click", () => {
+        const p1 = document.getElementById("player1").value.trim();
+        const p2 = document.getElementById("player2").value.trim();
+
+        if (p1 && p2) {
+          players = [p1, p2];
+          document.getElementById("playerTurn").textContent = `Turn: ${players[turn]}`;
+          document.getElementById("welcomeScreen").classList.remove("active");
+          document.getElementById("gameScreen").classList.add("active");
+        } else {
+          alert("Please enter both names!");
+        }
+      });
+
+      nextBtn.addEventListener("click", () => {
+        const randomQuestion = questions[Math.floor(Math.random() * questions.length)];
+        document.getElementById("questionText").textContent = randomQuestion;
+        turn = 1 - turn;
+        document.getElementById("playerTurn").textContent = `Turn: ${players[turn]}`;
+      });
+    };
+  </script>
+</body>
+</html>
